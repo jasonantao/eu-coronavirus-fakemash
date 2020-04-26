@@ -65,7 +65,7 @@ def compute_news_user_score(news_rating, review_count, given_score, user_rating)
     """
     iteratively re-calculate news attributes 
     """
-    discount_factor = 1
+    discount_factor = 0.1
     if review_count == 0:
         raw_news_rating = discount_factor * given_score
         new_rating = discount_factor * user_rating * raw_news_rating
@@ -91,8 +91,8 @@ def compute_user_rating_iterative(given_score, user_rating, user_cnt, old_score,
 
     if user_cnt == 0:
         raw_user_rating = (1 - diff_new / max_diff)
-        discount_factor = 0.5
-        user_new_rating = raw_user_rating * discount_factor
+        discounting_user_factor = 0.3
+        user_new_rating = raw_user_rating * discounting_user_factor
         user_cnt = user_cnt + 1
     else:
         discounting_user_factor = 1 - (1/user_cnt)
