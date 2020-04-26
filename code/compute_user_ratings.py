@@ -4,6 +4,9 @@ from entry_creation_schemes import create_connection
 
 
 def get_expert_transaction_id(conn, tr_id):
+    """
+    get expert attributes with given id
+    """
     cur = conn.cursor()
     cur.execute('''SELECT given_score FROM transaction_experts WHERE id=?''', (tr_id,))
     result = cur.fetchall()
@@ -11,6 +14,9 @@ def get_expert_transaction_id(conn, tr_id):
 
 
 def get_users(conn):
+    """
+    get users
+    """
     cur = conn.cursor()
     cur.execute('''SELECT id FROM users''')
     result = cur.fetchall()
@@ -19,10 +25,7 @@ def get_users(conn):
 
 def update_user_rating(conn, user):
     """
-    update priority, begin_date, and end date of a task
-    :param conn:
-    :param task:
-    :return: project id
+    update user rating
     """
     sql = ''' UPDATE users
               SET rating = ?
@@ -32,7 +35,7 @@ def update_user_rating(conn, user):
     conn.commit()
 
 
-def main_create_compute_user_rating(): 
+def main_compute_user_rating():
     """
     Creating user's output and comparing it to expert_response 
     :return: 
@@ -65,5 +68,5 @@ def main_create_compute_user_rating():
 
 
 if __name__ == '__main__':
-    main_create_compute_user_rating()
+    main_compute_user_rating()
 
