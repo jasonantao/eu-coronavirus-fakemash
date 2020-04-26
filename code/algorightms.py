@@ -25,7 +25,6 @@ def compute_user_rating_iterative(given_score, user_rating, user_cnt, old_score,
     """
     iteratively re-calculate user attributes 
     """
-    # discount user experience
     diff_new = abs(given_score - old_score)
     max_diff = 9
 
