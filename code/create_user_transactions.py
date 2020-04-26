@@ -1,7 +1,7 @@
-from entry_creation_schemes import create_connection
-
-import random
 import os
+import random
+from entry_creation_schemes import create_connection
+from algorightms import compute_news_user_score, compute_user_rating_iterative
 
 
 def get_user_info(conn, id):
@@ -59,49 +59,6 @@ def get_news_columns(conn, news_id):
     cur.execute('''SELECT * FROM news WHERE id=?''', (news_id,))
     result = cur.fetchall()
     return result
-
-
-def compute_news_user_score(news_rating, review_count, given_score, user_rating):
-    """
-    iteratively re-calculate news attributes 
-    """
-    discount_factor = 0.1
-    if review_count == 0:
-        raw_news_rating = discount_factor * given_score
-        new_rating = discount_factor * user_rating * raw_news_rating
-        review_count = review_count + 1
-    else:
-        average = review_count * news_rating
-        review_count = review_count + 1
-        new_rating = (average + user_rating * given_score) / review_count
-        discount_quanity = 1 - (1.0/review_count)
-        p = 0.5
-        # first_part = new_average * p
-        # second_part = 10 * (1 - p) * (1 - math.exp(- review_count / 100))
-    return new_rating, news_rating, review_count
-
-
-def compute_user_rating_iterative(given_score, user_rating, user_cnt, old_score, news_count): 
-    """
-    iteratively re-calculate user attributes 
-    """
-    # discount user experience
-    diff_new = abs(given_score - old_score)
-    max_diff = 9
-
-    if user_cnt == 0:
-        raw_user_rating = (1 - diff_new / max_diff)
-        discounting_user_factor = 0.3
-        user_new_rating = raw_user_rating * discounting_user_factor
-        user_cnt = user_cnt + 1
-    else:
-        discounting_user_factor = 1 - (1/user_cnt)
-        raw_user_rating = 1 - (diff_new/27)
-        user_new_rating = (user_rating * user_cnt + raw_user_rating) / (user_cnt + 1)
-        user_new_rating = discounting_user_factor * user_new_rating
-        user_cnt = user_cnt + 1
-
-    return user_new_rating, user_cnt
 
 
 def partition_list(r, n):
